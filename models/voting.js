@@ -1,3 +1,4 @@
+const { NotFoundError, BadRequestError } = require("../utils/error")
 
 const voting = {
   pepperoni: [],
@@ -17,11 +18,17 @@ class Voting {
   }
 
   static async recordVotes(pizzaName, user) {
-    if (voting[pizzaName]) {
-      if (!voting[pizzaName].includes(user)) 
-        voting[pizzaName].push(user)
+    if (!user) {
+      throw new BadRequestError("You must have a user in the request body to vote.")
+    }
+    if (!voting[pizzaName]) {
+      throw new NotFoundError("That pizza name is not part of the poll")
+    }
+    if (voting[pizzaName].includes(user)) {
+      throw new BadRequestError("That user has already voted for that pizza.")
     }
 
+    voting[pizzaName].push(user)
     return Voting.tallyVotes()
   }
 }

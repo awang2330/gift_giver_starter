@@ -1,3 +1,4 @@
+const { BadRequestError } = require("../utils/error") 
 
 class giftExchange {
 
@@ -6,6 +7,15 @@ class giftExchange {
   */ 
   static async pairs(names) {
     const allParings = []
+    
+    if (names == undefined) {
+      throw new BadRequestError("No names array in POST body found.")
+    }
+
+    if (names.length % 2 == 1) {
+      throw new BadRequestError("The number of users should be even for matching pairs.")
+    }
+
     while (names.length > 0) {
       const paring = []
       var randomPair = Math.floor(Math.random() * names.length)
