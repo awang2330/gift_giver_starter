@@ -7,7 +7,7 @@ class giftExchange {
   */ 
   static async pairs(names) {
     const allParings = []
-    
+
     if (names == undefined) {
       throw new BadRequestError("No names array in POST body found.")
     }
@@ -43,6 +43,58 @@ class giftExchange {
     }
     wordsOfPairings.push(`${names[randomPair]} is giving a gift to ${firstUser}`)
     return wordsOfPairings
+  }
+
+  static async quiz() {
+    const multipleChoice = [
+      {
+        question: "1+1=",
+        answers: [
+          "a. 11",
+          "b. 2",
+          "c. 田",
+          "d. window"
+        ]
+      },
+      {
+        question: "sleep+eat+play=",
+        answers: [
+          "a. lazy",
+          "b. life",
+          "c. lame",
+          "d. love"
+        ]
+      },
+    ]
+    return multipleChoice
+  }
+
+  static async quizPoints(answers) {
+    const multipleChoicePoints = [
+      {
+        "a": 1,
+        "b": 3,
+        "c": 2,
+        "d": 0
+      },
+      {
+        "a": 1,
+        "b": 3,
+        "c": 0,
+        "d": 2
+      }
+    ]
+
+    if (answers == undefined) {
+      throw new BadRequestError("No userAnswers array found in POST body.")
+    }
+
+    var points = 0
+    answers.forEach((element, index) => {
+      points += multipleChoicePoints[index][element]
+    })
+
+    return points
   }
 }
 
