@@ -89,9 +89,16 @@ class giftExchange {
       throw new BadRequestError("No userAnswers array found in POST body.")
     }
 
+
     var points = 0
     answers.forEach((element, index) => {
-      points += multipleChoicePoints[index][element]
+      if (element == "a" || element == "b" || element == "c" || element == "d") {
+        points += multipleChoicePoints[index][element]
+      }
+      else {
+        throw new BadRequestError(element + " is not an answer choice.")
+      }
+      
     })
 
     return points
