@@ -3,12 +3,15 @@
 const express = require("express") 
 const morgan = require("morgan") // logger
 const votingRouter = require("./routes/voting") // refernce to voting in voting.js
+const giftExchangeRouter = require("./routes/gift-exchange")
 
 const app = express() // instance of express
 
 /* use bare minimum logging (every request is run through morgan logging -> request type, route, time, metadata) */
 app.use(morgan("tiny"))
+app.use(express.json()) // post request parsed as json
 app.use("/voting", votingRouter) // attach to /voting endpoint
+app.use("/gift-exchange", giftExchangeRouter)
 
 /* Callback function, send back 200: good, 400: error, 500: internal server error*/
 app.get("/", async(req, res, next) => {
@@ -23,7 +26,7 @@ app.get("/hey", async(req, res, next) => {
 const port = 3000
 
 app.listen(port, () => {
-  console.log(module)
+  // console.log(module)
   console.log(`Server listening on port: ${port}`) 
 })
 
